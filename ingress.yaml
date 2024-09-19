@@ -21,7 +21,7 @@ spec:
     - host: app.djjj.com  # Subdomain for the application
       http:
         paths:
-          - path: /            # Path to match
+          - path: /            # Path to match . every path= 1 rule in listener 
             pathType: Prefix   # Match type for the path
             backend:
               service:
@@ -35,5 +35,29 @@ spec:
                 name: my-api-service   # Name of the API backend service
                 port:
                   number: 8080          # Port of the API backend service
+
+
+
+
+
+
+  1        - path: /            # Path to match . every path= 1 rule in listener 
+2 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Optional additional rules can be added here.
