@@ -2,6 +2,13 @@
 title: AWS Load Balancer Controller - External DNS Install
 description: Learn AWS Load Balancer Controller - External DNS Install
 ---
+MY POINTS SEARCH BELOW LINES 
+1 Create an IAM Policy via terraform--DD IDEA
+2 eksctl create iamserviceaccount \  #  HERE iamserviceaccount MEAN = IT CREATES BOTH IAM ROLE+SERVICE ACCOUNT BOTH BY THIS FULLCOMMAND
+
+
+
+
 
 ## Step-01: Introduction
 - **External DNS:** Used for Updating Route53 RecordSets from Kubernetes 
@@ -45,7 +52,7 @@ description: Learn AWS Load Balancer Controller - External DNS Install
   ]
 }
 ```
-# OR Create an IAM Policy via terraform
+# OR Create an IAM Policy via terraform--DD IDEA
 
 - Make a note of Policy ARN which we will use in next step
 ```t
@@ -69,7 +76,7 @@ eksctl create iamserviceaccount \
     --override-existing-serviceaccounts
 
 # Replaced name, namespace, cluster, IAM Policy arn 
-eksctl create iamserviceaccount \
+eksctl create iamserviceaccount \  #  HERE iamserviceaccount MEAN = IT CREATES BOTH IAM ROLE+SERVICE ACCOUNT BOTH BY THIS COMMAND
     --name external-dns \
     --namespace default \
     --cluster eksdemo1 \
