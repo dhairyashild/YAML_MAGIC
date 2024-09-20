@@ -1,3 +1,6 @@
+# CHANGE -line start by CHANGE NEED U TO CHANGES THERE FOR UR USE
+
+
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -6,7 +9,7 @@ metadata:
   # Otherwise, you may safely omit it.
   annotations:
     # Substitute your account ID and IAM service role name below. #Change-1: Replace with your IAM ARN Role for extern-dns
-    eks.amazonaws.com/role-arn: arn:aws:iam::180789647333:role/eksctl-eksdemo1-addon-iamserviceaccount-defa-Role1-1KZREOLB5TGO5
+    eks.amazonaws.com/role-arn: arn:aws:iam::180789647333:role/eksctl-eksdemo1-addon-iamserviceaccount-defa-Role1-1KZREOLB5TGO5  # CHANGE ACCOUNTID
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -58,7 +61,7 @@ spec:
       serviceAccountName: external-dns
       containers:
       - name: external-dns
-        image: k8s.gcr.io/external-dns/external-dns:v0.10.2
+        image: k8s.gcr.io/external-dns/external-dns:v0.10.2     # CHANGE= https://repost.aws/knowledge-center/eks-set-up-externaldns--on this websilte search this line image name upto: and find which latest version they use so replace that here
         args:
         - --source=service
         - --source=ingress
