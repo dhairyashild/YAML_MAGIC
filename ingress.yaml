@@ -4,7 +4,7 @@ metadata:
   name: my-alb-ingress
   namespace: default
   annotations:
-    kubernetes.io/ingress.class: alb  # This annotation is optional if ingressClassName is used
+    kubernetes.io/ingress.class: alb  # Optional if ingressClassName is used
     alb.ingress.kubernetes.io/scheme: internet-facing  # ALB scheme (internet-facing or internal)
     alb.ingress.kubernetes.io/target-type: instance  # Use instance mode for target type
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP  # Health check protocol
@@ -15,39 +15,60 @@ metadata:
     alb.ingress.kubernetes.io/success-codes: '200'  # Success codes for health checks
     alb.ingress.kubernetes.io/healthy-threshold-count: '2'  # Healthy threshold count
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'  # Unhealthy threshold count
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'  # Define listener ports
+    alb.ingress.kubernetes.io/ssl-redirect: '443'  # Redirect HTTP to HTTPS
+    external-dns.alpha.kubernetes.io/hostname: app1.example.com  # For ExternalDNS to create A record
 spec:
-  ingressClassName: alb  # Specify the Ingress class name (this is sufficient)
+  ingressClassName: alb  # Specify the Ingress class name
+  tls:
+    - hosts:
+        - app1.example.com   # Specify the host for TLS termination
+        - app2.example.com   # Add any additional hosts here for TLS
+      secretName: my-tls-secret  # Name of the Kubernetes secret containing the TLS certificate and key
   rules:
-    - host: app.djjj.com  # Subdomain for the application
+    - host: app2.example.com  # Subdomain for the application
       http:
         paths:
-          - path: /            # Path to match . every path= 1 rule in listener 
+          - path: /            # Path to match
             pathType: Prefix   # Match type for the path
             backend:
               service:
                 name: my-app-service  # Name of the backend service
                 port:
-                  number: 80            # Port of the backend service
-          - path: /api         # Additional path for API requests
+                  number: 80          # Port of the backend service
+          - path: /api                # Additional path for API requests
             pathType: Prefix
             backend:
               service:
                 name: my-api-service   # Name of the API backend service
                 port:
-                  number: 8080          # Port of the API backend service
+                  number: 8080         # Port of the API backend service
+
+# Optional additional rules can be added here.
 
 
 
 
+  1  - path: /            # Path to match . every path= 1 rule in listener 
+2. ADDING 2 LISTENER PORT 80 AND 443
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+3. SSL REDIRECT
+        alb.ingress.kubernetes.io/ssl-redirect: '443'
+  
+4 NAME BASED VIRTUAL ROUTING == (EVRY SUBDOMAIN ADD IN HOST)
+         alb.ingress.kubernetes.io/hostname: app.example.com  
+        ADD ABOVE SUBDOMAIN IN HOSTNAME BELOW. 
+        FOR EVERY NEW SUBDOMAIN CREATE NEW RULE AND ADD SUBDOMAIN WITH DOMAIN IN HOST DIRECTLY, IT IS CALLED AS NAME BASED VIRTUAL ROUTING
 
+5  Yes, both external-dns.alpha.kubernetes.io/hostname: app1.example.com and host: app2.example.com can create A records in Route 53 when using ExternalDNS; the former does so via annotations, while the latter does so through Ingress rules.
+6  If you have specific paths defined (like /app1 and /app2), those paths will take precedence over the defaultBackend. The default backend only applies when there are no matches found among the specified rules.
+7   tls:
+    - hosts:
+        - app1.example.com   # Specify the host for TLS termination
+        - app2.example.com   # Add any additional hosts here for TLS
+      secretName: my-tls-secret  # Name of the Kubernetes secret containing the TLS certificate and key
 
-  1        - path: /            # Path to match . every path= 1 rule in listener 
-2 
-
-
-
-
-
+ABOVE WILL DISCOVER AUTOMATICALLY WHICH DNS HAS CERTIFICATE AND NO NEED CERTIFICATE ANNOTATION 
 
 
 
