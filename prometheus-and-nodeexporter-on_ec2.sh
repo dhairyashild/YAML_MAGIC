@@ -71,8 +71,15 @@ sudo systemctl start prometheus.service
 sudo systemctl enable node_exporter.service
 sudo systemctl start node_exporter.service
 
+#Install grafana
+sudo apt-get install -y adduser libfontconfig1 musl
+wget https://dl.grafana.com/enterprise/release/grafana-enterprise_11.2.2_amd64.deb
+sudo dpkg -i grafana-enterprise_11.2.2_amd64.deb
+
+sudo systemctl restart grafana-server
+
+echo "Prometheus and Node Exporter and Grafana installation completed."
+
+
 # Check the status of both services
 sudo systemctl status prometheus.service
-sudo systemctl status node_exporter.service
-
-echo "Prometheus and Node Exporter installation completed."
